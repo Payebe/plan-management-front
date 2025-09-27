@@ -1,59 +1,136 @@
-# PlantManager
+Voici le **README.md** pour votre application frontend Angular, basé sur la structure fournie :
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.3.
+````markdown
+# 🌱 Plant Manager Frontend
 
-## Development server
+Application frontend développée avec **Angular** pour interagir avec le **Plant Manager Backend**. Elle offre une interface utilisateur moderne et réactive pour gérer vos plantes, suivre les actions de soin, visualiser les notifications et consulter le tableau de bord.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 🚀 Technologies
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+* [Angular](https://angular.dev/) - Framework pour construire l'application
+* [TypeScript](https://www.typescriptlang.org/) - Langage de programmation principal
+* [Tailwind CSS](https://tailwindcss.com/) - Framework CSS utilitaire pour le style
+* [Ng Icons](https://ng-icons.github.io/ng-icons/) - Bibliothèque d'icônes légère (Lucide, etc.)
+* **Routing** - Gestion de la navigation côté client
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 📂 Structure du projet (Angular)
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Ce projet suit une architecture modulaire classique pour les applications Angular :
 
 ```bash
-ng build
-```
+📦src
+ ┣ 📂app
+ ┃ ┣ 📂core              # Services de base (AuthService, Interceptors, Guards)
+ ┃ ┣ 📂features          # Modules fonctionnels/Lazy-loaded (Login, Dashboard, Plants, etc.)
+ ┃ ┣ 📂layout            # Composants de mise en page (MainLayout)
+ ┃ ┣ 📂shared            # Éléments réutilisables (Composants, Models, Services)
+ ┃ ┣ 📜app.config.ts     # Configuration de l'application (Standalone)
+ ┃ ┗ 📜app.routes.ts     # Configuration principale du routage
+ ┣ 📂environments        # Configuration des environnements (dev, prod)
+ ┗ 📜styles.css          # Fichier de styles global (incluant Tailwind)
+````
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+-----
 
-## Running unit tests
+## 🛠️ Fonctionnalités clés
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+L'application est décomposée en plusieurs modules fonctionnels :
+
+### 🔑 Gestion des utilisateurs (`/features/auth`)
+
+  * **Connexion (`/login`)** : Authentification auprès du backend.
+  * **Inscription (`/register`)** : Création d'un nouveau compte utilisateur.
+  * **Profil (`/profile`)** : Consultation et modification des informations utilisateur.
+
+### 🌱 Gestion des Plantes et Soins
+
+  * **Plantes (`/plants`)** : Liste des plantes et gestion individuelle.
+  * **Journal des Soins (`/care-logs`)** : Historique et ajout des actions de soin effectuées.
+  * **Programme d'Arrosage (`/watering-schedule`)** : Planification et suivi de l'arrosage.
+
+### 📊 Tableau de Bord et Suivi
+
+  * **Tableau de Bord (`/dashboard`)** : Vue d'ensemble des statistiques et rappels importants.
+  * **Notifications (`/notifications`)** : Consultation des alertes et rappels de soins.
+
+### 🧩 Composants partagés (`/shared`)
+
+  * **`AddPlantModal`** : Composant modale réutilisable pour ajouter une nouvelle plante.
+  * **`PlantModel`** : Interface de typage TypeScript pour les données de plante.
+  * **`PlantsService`** : Service pour les appels API liés aux plantes.
+
+-----
+
+## ⚙️ Installation et Lancement
+
+### 1️⃣ Prérequis
+
+Assurez-vous que [Node.js](https://nodejs.org/) et [npm](https://www.npmjs.com/) sont installés.
+
+### 2️⃣ Cloner le projet
 
 ```bash
-ng test
+git clone [https://github.com/ton-compte/plant-manager-frontend.git](https://github.com/ton-compte/plant-manager-frontend.git)
+cd plant-manager-frontend
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### 3️⃣ Installer les dépendances
 
 ```bash
-ng e2e
+npm install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### 4️⃣ Configuration API
 
-## Additional Resources
+Modifiez le fichier `src/environments/environment.ts` pour pointer vers l'URL de votre backend NestJS (par défaut `http://localhost:3000`).
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000', // Assurez-vous que l'URL est correcte
+};
+```
+
+### 5️⃣ Lancer le serveur de développement
+
+```bash
+npm run start
+```
+
+L'application sera accessible sur [http://localhost:4200](https://www.google.com/search?q=http://localhost:4200).
+
+-----
+
+## 🛡️ Sécurité et Performance
+
+  * **Authentification Guard (`auth.guard.ts`)** : Protège les routes nécessitant une connexion.
+  * **Intercepteur d'Authentification (`auth.interceptor.ts`)** : Ajoute automatiquement le token JWT aux requêtes API sortantes.
+  * **Lazy Loading** : Les modules fonctionnels sont probablement chargés paresseusement (`/features`), ce qui améliore le temps de chargement initial.
+
+-----
+
+## 📜 Scripts Utiles
+
+  * `npm run start` : Lance le serveur de développement.
+  * `npm run build` : Construit l'application pour la production.
+  * `npm run test` : Exécute les tests unitaires.
+  * `npm run lint` : Exécute le linter pour vérifier le code.
+
+-----
+
+## 🤝 Contribution
+
+Veuillez consulter le fichier `CONTRIBUTING.md` pour les directives de contribution.
+
+-----
+
+## 📖 License
+
+Ce projet est distribué sous la licence **MIT**.
+
+```
+```
