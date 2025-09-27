@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles personnalisés pour l'application */
+@layer components {
+  .sidebar-item {
+    @apply flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-plant-green-50 hover:text-plant-green-700 cursor-pointer;
+  }
+  
+  .sidebar-item.active {
+    @apply bg-plant-green-100 text-plant-green-700 font-medium;
+  }
+}
+
+/* Reset et base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}

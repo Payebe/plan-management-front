@@ -1,0 +1,54 @@
+/* Styles personnalisés pour la sidebar */
+.sidebar-item {
+  @apply flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-plant-green-50 hover:text-plant-green-700 cursor-pointer;
+}
+
+.sidebar-item.active {
+  @apply bg-plant-green-100 text-plant-green-700 font-medium;
+}
+
+.sidebar-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: #22c55e;
+  border-radius: 0 2px 2px 0;
+}
+
+/* Smooth scroll */
+main {
+  scroll-behavior: smooth;
+}
+
+/* Assurer que le contenu prend toute la hauteur */
+.h-screen {
+  height: 100vh;
+}
+
+/* Animation smooth pour la sidebar */
+.transform {
+  transform: translateX(0);
+}
+
+.transition-transform {
+  transition-property: transform;
+}
+
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.ease-in-out {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.-translate-x-full {
+  transform: translateX(-100%);
+}
+
+.translate-x-0 {
+  transform: translateX(0);
+}

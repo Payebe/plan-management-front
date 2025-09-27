@@ -1,0 +1,181 @@
+<div class="h-screen bg-gray-100 flex overflow-hidden">
+  <!-- Overlay mobile pour fermer la sidebar -->
+  <div 
+    *ngIf="isSidebarOpen && isMobile"
+    class="fixed inset-0 bg-black bg-opacity-50 z-40"
+    (click)="closeSidebar()">
+  </div>
+
+  <!-- Sidebar -->
+  <nav 
+    class="fixed z-50 bg-white shadow-lg w-64 h-full flex flex-col transform transition-transform duration-300 ease-in-out"
+    [class.translate-x-0]="isSidebarOpen || !isMobile"
+    [class.-translate-x-full]="!isSidebarOpen && isMobile">
+
+    <!-- Header de la sidebar -->
+    <div class="flex items-center justify-between p-6 border-b border-gray-200">
+      <div class="flex items-center space-x-2">
+        <div class="w-8 h-8 bg-plant-green-500 rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold">🌱</span>
+        </div>
+        <span class="text-xl font-bold text-gray-900">PlantCare</span>
+      </div>
+
+      <!-- Bouton fermer sur mobile -->
+      <button 
+        *ngIf="isMobile"
+        (click)="closeSidebar()"
+        class="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200">
+        <span class="text-gray-500">✕</span>
+      </button>
+    </div>
+
+    <!-- Navigation principale -->
+    <div class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+      <div 
+        *ngFor="let item of menuItems"
+        (click)="navigate(item.route)"
+        class="sidebar-item relative"
+        [class.active]="isActiveRoute(item.route)">
+
+        <span class="text-xl">{{ item.icon }}</span>
+        <span class="flex-1">{{ item.label }}</span>
+
+        <!-- Badge pour les notifications -->
+        <span 
+          *ngIf="item.badge && item.badge > 0"
+          class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
+          {{ item.badge }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Footer de la sidebar - seulement logo ou stats -->
+    <div class="border-t border-gray-200 p-4">
+      <div class="text-center text-xs text-gray-500">
+        <p>PlantCare v1.0</p>
+        <p class="mt-1">Prenez soin de vos plantes 🌿</p>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Zone de contenu principal -->
+  <div class="flex-1 flex flex-col" [class.pl-64]="!isMobile">
+    <!-- Header principal -->
+    <header class="bg-white shadow-sm border-b border-gray-200 px-4 py-3 relative z-30">
+      <div class="flex items-center justify-between">
+        
+        <!-- Section gauche - Hamburger + Titre mobile -->
+        <div class="flex items-center">
+          <!-- Bouton hamburger pour mobile -->
+          <button 
+            *ngIf="isMobile"
+            (click)="toggleSidebar()"
+            class="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 mr-3">
+            <span class="text-gray-600 text-lg">☰</span>
+          </button>
+
+          <h1 class="text-lg font-semibold text-gray-900" *ngIf="isMobile">
+            PlantCare
+          </h1>
+        </div>
+
+        <!-- Section droite - Actions du header -->
+        <div class="flex items-center space-x-3">
+          
+          <!-- Bouton Notifications -->
+          <div class="relative">
+            <button 
+              (click)="navigateToNotifications()"
+              class="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 relative">
+              <span class="text-gray-600 text-lg">🔔</span>
+              
+              <!-- Badge notifications -->
+              <span 
+                *ngIf="notificationsBadge > 0"
+                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center min-w-[20px]">
+                {{ notificationsBadge }}
+              </span>
+            </button>
+          </div>
+
+          <!-- User Dropdown -->
+          <div class="relative user-dropdown-container">
+            <button 
+              (click)="toggleUserDropdown()"
+              class="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-lg transition-all duration-200">
+              
+              <!-- Avatar ou initiales -->
+              <div class="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-sm">
+                <span *ngIf="!userInfo.avatar" class="text-white text-sm font-semibold">
+                  {{ getUserInitials() }}
+                </span>
+                <img 
+                  *ngIf="userInfo.avatar" 
+                  [src]="userInfo.avatar" 
+                  [alt]="userInfo.name"
+                  class="w-full h-full rounded-full object-cover">
+              </div>
+
+              <!-- Nom (masqué sur mobile) -->
+              <span class="hidden md:block text-sm font-medium text-gray-700">
+                {{ userInfo.name }}
+              </span>
+
+              <!-- Icône dropdown -->
+              <svg class="w-4 h-4 text-gray-500 transition-transform duration-200" 
+                   [class.rotate-180]="isUserDropdownOpen" 
+                   fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div 
+              *ngIf="isUserDropdownOpen"
+              class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 transform transition-all duration-200 origin-top-right">
+              
+              <!-- User Info -->
+              <div class="px-4 py-3 border-b border-gray-100">
+                <p class="text-sm font-medium text-gray-900">{{ userInfo.name }}</p>
+                <p class="text-xs text-gray-500">{{ userInfo.email }}</p>
+              </div>
+
+              <!-- Menu Items -->
+              <button 
+                (click)="navigateToProfile()"
+                class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                <span class="mr-3">👤</span>
+                Mon Profil
+              </button>
+
+              <button 
+                (click)="navigate('/profile')"
+                class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                <span class="mr-3">⚙️</span>
+                Paramètres
+              </button>
+
+              <div class="border-t border-gray-100 mt-2 pt-2">
+                <button 
+                  (click)="logout()"
+                  class="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                  <span class="mr-3">🚪</span>
+                  Se déconnecter
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Zone de contenu -->
+    <main class="flex-1 overflow-y-auto bg-gray-50">
+      <div class="p-4 md:p-6">
+        <!-- Le contenu des pages sera injecté ici -->
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Animation pour les images */
+.care-log-image {
+  transition: transform 0.2s ease-in-out;
+}
+
+.care-log-image:hover {
+  transform: scale(1.05);
+}
+
+/* Animation pour les cards */
+.care-log-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.care-log-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
